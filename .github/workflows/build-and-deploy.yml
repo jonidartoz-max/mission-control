@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -39,7 +43,7 @@ jobs:
           from huggingface_hub import HfApi
           import os
           api = HfApi(token=os.environ['HF_TOKEN'])
-          dockerfile = "FROM ghcr.io/jonidartoz-max/mission-control:latest\n"
+          dockerfile = "FROM ghcr.io/jonidartoz-max/mission-control:latest\nUSER root\nEXPOSE 7860\nENV PORT=7860\nENV HOSTNAME=0.0.0.0\n"
           api.upload_file(
               path_or_fileobj=dockerfile.encode(),
               path_in_repo='Dockerfile',
