@@ -1,4 +1,4 @@
-FROM node:22.22.0-slim AS base
+FROM node:26.5.1-slim AS base
 RUN corepack enable && corepack prepare pnpm@10.29.3 --activate
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN pnpm build
 
-FROM node:22.22.0-slim AS runtime
+FROM node:26.5.1-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
 RUN apt-get update && apt-get install -y curl ca-certificates python3 git make g++ procps --no-install-recommends && rm -rf /var/lib/apt/lists/*
